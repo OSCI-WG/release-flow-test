@@ -1,7 +1,7 @@
 release-flow-test
 =================
 
-Repository for testing development flow.
+Repository for testing development flow. The focus of this repository is testing/experiencing the release flow described in [DEVELOPMENT.md](file:docs/DEVELOPMENT.md)
 
 Before we get everyone involved, a baseline set of files will be put in place. Announcements  via the email
 reflector <lwg@lists.accellera.org> will be forthcoming on when the actual testing will begin. 
