@@ -22,4 +22,8 @@ Files and directories
 	 +-examples/ -- contains various sample files
 	 +-src/ -- source code to be maintained
 
+Web-site
+========
+There is also a website associated with this project: http://osci-wg.github.com/release-flow-test/
+
 ### TAF!
