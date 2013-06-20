@@ -1,9 +1,9 @@
 Development process of the Accellera SystemC implementation
 ===========================================================
-v0.9, September 2012
+v1.0, June 2013
 
 *An HTML-rendered copy of this document can be found at
- <https://github.com/OSCI-WG/systemc/wiki/development>.*
+ <https://github.com/OSCI-WG/systemc/blob/master/docs/DEVELOPMENT.md>.*
 
 
 In this document, the internal development process for Accellera's SystemC
@@ -12,7 +12,7 @@ relates to the development and maintenance procedures for the ASI
 proof-of-concept implementation of SystemC (and TLM).  This document
 focuses on the technical aspects related to the development of the ASI
 SystemC implementation.  Legal and formal procedures are documented at
-<http://accellera.org>.
+<http://accellera.org/about/policies>.
 
 
 ---------------------------------------------------------------------
@@ -23,8 +23,8 @@ The central source code repository of the ASI SystemC implementation is
 hosted in two [Git] [1] repositories at [GitHub](http://github.com).  The
 repositories are private to the `OSCI-WG` organization and can be found at:
 
- * <http://github.com/OSCI-WG/systemc>             (core SystemC library)
- * <http://github.com/OSCI-WG/systemc-regressions> (regression test suite)
+ * <https://github.com/OSCI-WG/systemc>             (core SystemC library)
+ * <https://github.com/OSCI-WG/systemc-regressions> (regression test suite)
 
 Members of the `OSCI-WG` organization with the necessary access rights can
 clone the repositories via SSH from the locations
@@ -39,7 +39,7 @@ organization in general, LWG members can contact the LWG chairs at
 >  *Note:*
 >  Using an explicit name of the 'remote' (`-o osci-wg`) is recommended
 >  to allow using the default remote name `origin` for a personal fork
->  where you can push your changes by default, see [below](#sec:branching).
+>  where you can push your changes by default, see [below](#basic-branch-setup).
 
 Comprehensive documentation about [Git] [1], a distributed version control
 system, can be found in the [Pro Git book] [2], also available online.
@@ -52,7 +52,7 @@ recommended to create personal (or company-based) [forks] [3] of the
 repositories on GitHub and push the proposed changes (bugfixes,
 features, ...) there.  These forks are also only accessible to members
 of the OSCI-WG organization. Details of the intended work-flow are
-described in the next [section](#sec:branching). It is convenient to
+described in the next [section](#basic-branch-setup). It is convenient to
 add this GitHub fork as a remote to your local clone of the
 repository:
 
@@ -82,7 +82,6 @@ Git commands and workflow can be found [online] [4].
 
 
 ---------------------------------------------------------------------
-<a id="sec:branching" />
 Development flow
 ---------------------------------------------------------------------
 
@@ -119,7 +118,7 @@ To prepare a release, the `master` branch would then be merged into the
 `release` branch, the automake files would be updated (if necessary) and
 the clean working tree could be used as baseline for the tarball (e.g.,
 via `git-archive(1)`).  Details are described in the next section
-[release management](#sec:release).  The history of the (core library)
+[release management](#release-management).  The history of the (core library)
 repostitory could then look like shown in the following graph
 (time progresses upwards):
 
@@ -132,13 +131,13 @@ repostitory could then look like shown in the following graph
         |         /      |           o - [systemc-2.3.0.1]
         |        /    -- o          /|
         |       /    /   |         o |
-        ^      |  o--    …          \|
-        |      o  …      | --------- o - [systemc-2.3.0]
-        |      |  o      …/          |
-        |      o   \---- o -[public] …
+        ^      |  o--   ...         \|
+        |      o ...     |  -------- o - [systemc-2.3.0]
+        |      |  o     .../         |
+        |      o   \---- o -[public] ..
         ^       \       \|           |
         |        ------- o           o   (internal snapshot)
-        |                …           |
+        |               ...          |
         ^                            o - [systemc-2.2.0]
 
 It should usually be sufficient to keep the two branches `master`
@@ -157,7 +156,6 @@ kernel.
 [5]: http://nvie.com/posts/a-successful-git-branching-model/ "'A successful Git branching model' by Vincent Driessen"
 
 
-<a id="sec:feature-branch" />
 ### Adding a feature (set)
 
 The development of a new contribution in form of a feature or a
@@ -264,7 +262,7 @@ deltas instead of the full tarballs are stored within the repository.
 
 The maintenance of the `pristine-tar` branch (i.e., adding new archives to
 the `pristine-tar` branch) is done by the LWG chairs during the [release
-management](#sec:release).
+management](#release-management).
 
 [7]: http://joeyh.name/code/pristine-tar/ "pristine-tar homepage"
 
@@ -298,7 +296,7 @@ development branch:
 
 Once, the bug fix branch is ready, it should be pushed into the
 vendor's github account and a pull request created, as described in
-the [feature branch section](#sec:feature-branch).
+the [feature branch section](#adding-a-feature-set).
 
 A new feature consists usually of a series of commits developed in a
 dedicated feature branched of the vendor's or ASI's development
@@ -311,11 +309,10 @@ feature branch:
 
 Once, the bug fix branch is ready, it should be pushed into the
 vendor's github account and a pull request created, as described in
-the [feature branch section](#sec:feature-branch).
+the [feature branch section](#adding-a-feature-set).
 
 
 ---------------------------------------------------------------------
-<a id="sec:release" />
 Release management
 ---------------------------------------------------------------------
 
@@ -405,16 +402,77 @@ performed by the maintainer
 Issue tracking
 ---------------------------------------------------------------------
 
-*TODO*: add issue tracking details
+Open issues (bugs, cleanups, features) related to ASI's proof-of-concept
+implementation of SystemC/TLM are tracked in GitHub's issue tracking system:
 
- * Use GitHub issue tracker
- * Define tags for severities and categories
- * Use pull-requests
+ * <https://github.com/OSCI-WG/systemc/issues>             (core library)
+ * <https://github.com/OSCI-WG/systemc-regressions/issues> (regression tests)
+
+Issues are grouped (by using labels) in the following categories for
+different parts of the implementation:
+
+ * `core`           - SystemC core language, i.e. everything in `sc_core`
+ * `datatypes`      - SystemC datatypes, i.e. in `sc_dt`
+ * `tlm`            - TLM-1.0, TLM-2.0
+ * `infrastructure` - build system(s), scripts, etc.  
+
+Additional labels are used to classify issues according to their
+severity (10 highest), according to the following guidelines:
+
+ * `10-critical`
+ 
+   Show-stoppers that must be fixed, affects all (or at least most)
+   platforms and violates fundamental specifications for most applications.
+
+ * `09-serious`
+
+   At least one of the explicitly supported platforms is affected and
+   causes significant problems for many applications.
+ 
+ * `06-medium`
+
+   Covers an area, where the standard may not be clearly specified.  May
+   require changes to external/standard API.
+ 
+ * `05-feature`
+
+   New feature proposal, beyond the current standard. Includes internal
+   (and external, providing adoption by IEEE P1666 WG) API changes.
+ 
+ * `04-errata`
+
+   Inconvenience (errata) for users of many platforms, workaround available.
+   Solution may require internal API changes.
+
+ * `02-documentation`
+
+   Documentation inconsistency or insufficiency (e.g. whitepaper unclear
+   or misleading), no code changes.
+
+ * `01-inconvenience`
+
+   Inconvenience (workaround available), for some platforms
+   (e.g. users of Visual Studio 2003)
+ 
+ * `00-cosmetic`
+
+   Changes addressing performance or clarity of implementation,
+   no API changes. 
+
+The discussion on issues usually starts on the LWG reflector or during the
+LWG meetings.  After an initial consensus on the "validity" of the issue,
+the issue is added to the issue tracking system, a classification is done
+(including a target milestone), and preferably a responsible person is
+assigned.
 
 
 ---------------------------------------------------------------------
 Changelog
 ---------------------------------------------------------------------
+
+* v1.0 - Development flow implemented at GitHub (2013-06-20)
+
+ * Issue tracking documented
 
 * v0.9 - Initial proposal to the ASI LWG (2012-09-25)
 
